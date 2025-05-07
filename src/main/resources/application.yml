@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: timur
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user_subscription_db
+    username: timur
+    password: timur
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    locations: classpath:db/migration
+    enabled: true
+    baseline-version: 0
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+
+
+api:
+  prefix: "/api/v1/"
+
+server:
+  port: 8088

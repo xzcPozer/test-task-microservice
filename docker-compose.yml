@@ -1,0 +1,39 @@
+services:
+  postgres:
+    container_name: pg_database
+    image: postgres
+    environment:
+      POSTGRES_DB: user_subscription_db
+      POSTGRES_USER: timur
+      POSTGRES_PASSWORD: timur
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - test-net
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8088:8088
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/user_subscription_db
+      - SPRING_DATASOURCE_USERNAME=timur
+      - SPRING_DATASOURCE_PASSWORD=timur
+    depends_on:
+      - postgres
+    networks:
+      - test-net
+    restart: unless-stopped
+
+
+networks:
+  test-net:
+    driver: bridge
+
+volumes:
+  postgres:
